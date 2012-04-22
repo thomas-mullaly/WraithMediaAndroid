@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+    <SeekBar android:id="@+id/playback_controls_seekbar"
+             android:layout_height="wrap_content" android:layout_width="fill_parent" />
+
+    <LinearLayout android:layout_height="wrap_content"
+                  android:layout_width="fill_parent" android:orientation="horizontal">
+        <Button android:id="@+id/playback_controls_play_button" android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:text="Pause" />
+    </LinearLayout>
+</LinearLayout>
