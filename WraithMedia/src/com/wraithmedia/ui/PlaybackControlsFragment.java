@@ -48,7 +48,7 @@ public class PlaybackControlsFragment extends Fragment {
         mServiceConnector = new MediaPlaybackServiceConnector();
         mServiceToken = mServiceConnector.bindToService(getActivity(), mServiceConnectionCallback);
 
-        Button playButton = (Button)getView().findViewById(R.id.playback_controls_play_button);
+        Button playButton = (Button)getView().findViewById(R.id.playback_controls_play_pause_toggle_button);
         playButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (mBoundToMediaPlaybackService) {
