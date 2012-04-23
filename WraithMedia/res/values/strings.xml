@@ -3,6 +3,8 @@
 
     <string name="hello">Hello World, WraithMediaActivity!</string>
     <string name="app_name">WraithMedia</string>
-	<string name="action_bar_songs">Songs</string>
-	
+    <string name="action_bar_songs">Songs</string>
+    <string name="playback_controls_play">Play</string>
+    <string name="playback_controls_pause">Pause</string>
+
 </resources>

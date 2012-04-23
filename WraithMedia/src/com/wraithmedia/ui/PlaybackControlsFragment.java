@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,7 @@ public class PlaybackControlsFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             boolean isPlaying = intent.getExtras().getBoolean(MediaPlaybackService.MUSIC_PLAYBACK_BROADCAST_EXTRA_IS_PLAYING);
 
-            mPlayPauseToggleButton.setText(isPlaying ? "Pause" : "Play");
+            mPlayPauseToggleButton.setText(isPlaying ? R.string.playback_controls_pause : R.string.playback_controls_play);
         }
     };
 

@@ -10,6 +10,6 @@
     <LinearLayout android:layout_height="wrap_content"
                   android:layout_width="fill_parent" android:orientation="horizontal">
         <Button android:id="@+id/playback_controls_play_pause_toggle_button" android:layout_height="wrap_content"
-                android:layout_width="wrap_content" android:text="Pause" />
+                android:layout_width="wrap_content" android:text="@string/playback_controls_pause" />
     </LinearLayout>
 </LinearLayout>
