@@ -51,19 +51,36 @@ public class MediaPlaybackService extends Service {
         try {
             mMediaPlayer.setDataSource(uri);
             mMediaPlayer.prepare();
-            mMediaPlayer.start();
-            broadcastChange(MUSIC_PLAYBACK_BROADCAST_PLAYSTATE_CHANGED);
+            startMediaPlayer();
         } catch (IOException ex) {
             Log.e(MUSIC_PLAYER_SERVICE_NAME, "Error opening file", ex);
         }
     }
 
     public void pause() {
-        mMediaPlayer.pause();
+        pauseMediaPlayer();
     }
 
     public void resume() {
+        startMediaPlayer();
+    }
+
+    public void togglePlayPause() {
+        if(mMediaPlayer.isPlaying()) {
+            pauseMediaPlayer();
+        } else {
+            startMediaPlayer();
+        }
+    }
+
+    private void pauseMediaPlayer() {
+        mMediaPlayer.pause();
+        broadcastChange(MUSIC_PLAYBACK_BROADCAST_PLAYSTATE_CHANGED);
+    }
+
+    private void startMediaPlayer() {
         mMediaPlayer.start();
+        broadcastChange(MUSIC_PLAYBACK_BROADCAST_PLAYSTATE_CHANGED);
     }
 
     private void broadcastChange(String what) {

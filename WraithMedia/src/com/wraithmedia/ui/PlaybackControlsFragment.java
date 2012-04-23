@@ -52,7 +52,7 @@ public class PlaybackControlsFragment extends Fragment {
         playButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (mBoundToMediaPlaybackService) {
-                    mMediaPlayerService.pause();
+                    mMediaPlayerService.togglePlayPause();
                 }
             }
         });
