@@ -1,8 +1,13 @@
 package com.wraithmedia.ui;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,7 @@ public class PlaybackControlsFragment extends Fragment {
     private MediaPlaybackService mMediaPlayerService;
     private MediaPlaybackServiceConnector mServiceConnector;
     private ServiceToken mServiceToken;
+    private Button mPlayPauseToggleButton;
 
     private final MediaPlaybackServiceConnectionCallback mServiceConnectionCallback = new MediaPlaybackServiceConnectionCallback() {
         public void onServiceConnected(ComponentName componentName, MediaPlaybackService mediaPlaybackService) {
@@ -28,6 +34,15 @@ public class PlaybackControlsFragment extends Fragment {
         public void onServiceDisconnected(ComponentName componentName) {
             mBoundToMediaPlaybackService = false;
             mMediaPlayerService = null;
+        }
+    };
+
+    private final BroadcastReceiver mPlaybackStateChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isPlaying = intent.getExtras().getBoolean(MediaPlaybackService.MUSIC_PLAYBACK_BROADCAST_EXTRA_IS_PLAYING);
+
+            mPlayPauseToggleButton.setText(isPlaying ? "Pause" : "Play");
         }
     };
 
@@ -45,11 +60,13 @@ public class PlaybackControlsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        registerPlaybackStateChangeReceiver();
+
         mServiceConnector = new MediaPlaybackServiceConnector();
         mServiceToken = mServiceConnector.bindToService(getActivity(), mServiceConnectionCallback);
 
-        Button playButton = (Button)getView().findViewById(R.id.playback_controls_play_pause_toggle_button);
-        playButton.setOnClickListener(new View.OnClickListener() {
+        mPlayPauseToggleButton = (Button)getView().findViewById(R.id.playback_controls_play_pause_toggle_button);
+        mPlayPauseToggleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (mBoundToMediaPlaybackService) {
                     mMediaPlayerService.togglePlayPause();
@@ -62,6 +79,14 @@ public class PlaybackControlsFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
+        getActivity().unregisterReceiver(mPlaybackStateChangedReceiver);
         mServiceConnector.unbindFromService(mServiceToken);
+    }
+
+    private void registerPlaybackStateChangeReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MediaPlaybackService.MUSIC_PLAYBACK_BROADCAST_PLAYSTATE_CHANGED);
+
+        getActivity().registerReceiver(mPlaybackStateChangedReceiver, intentFilter);
     }
 }
