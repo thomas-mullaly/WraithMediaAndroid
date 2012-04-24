@@ -73,6 +73,18 @@ public class MediaPlaybackService extends Service {
         }
     }
 
+    public boolean isPlaying() {
+        return mMediaPlayer.isPlaying();
+    }
+
+    public int getCurrentPosition() {
+        return mMediaPlayer.getCurrentPosition();
+    }
+
+    public int getDuration() {
+        return mMediaPlayer.getDuration();
+    }
+
     private void pauseMediaPlayer() {
         mMediaPlayer.pause();
         broadcastChange(MUSIC_PLAYBACK_BROADCAST_PLAYSTATE_CHANGED);

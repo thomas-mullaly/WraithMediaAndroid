@@ -7,10 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SeekBar;
+
 import com.wraithmedia.R;
 import com.wraithmedia.core.service.ServiceToken;
 import com.wraithmedia.playback.MediaPlaybackService;
@@ -18,19 +22,28 @@ import com.wraithmedia.playback.MediaPlaybackServiceConnectionCallback;
 import com.wraithmedia.playback.MediaPlaybackServiceConnector;
 
 public class PlaybackControlsFragment extends Fragment {
+    private static final int TIMEOUT_PERIOD = 250;
+
     private boolean mBoundToMediaPlaybackService = false;
     private MediaPlaybackService mMediaPlayerService;
     private MediaPlaybackServiceConnector mServiceConnector;
     private ServiceToken mServiceToken;
     private Button mPlayPauseToggleButton;
+    private SeekBar mSeekBar;
+    private Handler mTimerHandler;
 
     private final MediaPlaybackServiceConnectionCallback mServiceConnectionCallback = new MediaPlaybackServiceConnectionCallback() {
         public void onServiceConnected(ComponentName componentName, MediaPlaybackService mediaPlaybackService) {
             mMediaPlayerService = mediaPlaybackService;
             mBoundToMediaPlaybackService = true;
+
+            if(mMediaPlayerService.isPlaying()) {
+                mTimerHandler.post(mTimerTask);
+            }
         }
 
         public void onServiceDisconnected(ComponentName componentName) {
+            mTimerHandler.removeCallbacks(mTimerTask);
             mBoundToMediaPlaybackService = false;
             mMediaPlayerService = null;
         }
@@ -41,7 +54,21 @@ public class PlaybackControlsFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             boolean isPlaying = intent.getExtras().getBoolean(MediaPlaybackService.MUSIC_PLAYBACK_BROADCAST_EXTRA_IS_PLAYING);
 
+            mTimerHandler.removeCallbacks(mTimerTask);
+
+            if (isPlaying) {
+                mTimerHandler.post(mTimerTask);
+            }
+
             mPlayPauseToggleButton.setText(isPlaying ? R.string.playback_controls_pause : R.string.playback_controls_play);
+        }
+    };
+
+    private final Runnable mTimerTask = new Runnable() {
+        public void run() {
+            mSeekBar.setProgress(mMediaPlayerService.getCurrentPosition());
+            mSeekBar.setMax(mMediaPlayerService.getDuration());
+            mTimerHandler.postDelayed(mTimerTask, TIMEOUT_PERIOD);
         }
     };
 
@@ -64,6 +91,8 @@ public class PlaybackControlsFragment extends Fragment {
         mServiceConnector = new MediaPlaybackServiceConnector();
         mServiceToken = mServiceConnector.bindToService(getActivity(), mServiceConnectionCallback);
 
+        mTimerHandler = new Handler();
+
         mPlayPauseToggleButton = (Button)getView().findViewById(R.id.playback_controls_play_pause_toggle_button);
         mPlayPauseToggleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -72,11 +101,15 @@ public class PlaybackControlsFragment extends Fragment {
                 }
             }
         });
+
+        mSeekBar = (SeekBar)getView().findViewById(R.id.playback_controls_seekbar);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
+        mTimerHandler.removeCallbacks(mTimerTask);
 
         getActivity().unregisterReceiver(mPlaybackStateChangedReceiver);
         mServiceConnector.unbindFromService(mServiceToken);
