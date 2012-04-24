@@ -8,15 +8,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.wraithmedia.R;
 import com.wraithmedia.core.service.ServiceToken;
+import com.wraithmedia.media.MediaTimeFormatter;
 import com.wraithmedia.playback.MediaPlaybackService;
 import com.wraithmedia.playback.MediaPlaybackServiceConnectionCallback;
 import com.wraithmedia.playback.MediaPlaybackServiceConnector;
@@ -30,7 +31,10 @@ public class PlaybackControlsFragment extends Fragment {
     private ServiceToken mServiceToken;
     private Button mPlayPauseToggleButton;
     private SeekBar mSeekBar;
+    private TextView mCurrentPositionText;
+    private TextView mDurationText;
     private Handler mTimerHandler;
+    private final MediaTimeFormatter mMediaTimeFormatter = new MediaTimeFormatter();
 
     private final MediaPlaybackServiceConnectionCallback mServiceConnectionCallback = new MediaPlaybackServiceConnectionCallback() {
         public void onServiceConnected(ComponentName componentName, MediaPlaybackService mediaPlaybackService) {
@@ -68,6 +72,10 @@ public class PlaybackControlsFragment extends Fragment {
         public void run() {
             mSeekBar.setProgress(mMediaPlayerService.getCurrentPosition());
             mSeekBar.setMax(mMediaPlayerService.getDuration());
+
+            mCurrentPositionText.setText(mMediaTimeFormatter.formatMediaTime(mMediaPlayerService.getCurrentPosition() / 1000));
+            mDurationText.setText(mMediaTimeFormatter.formatMediaTime(mMediaPlayerService.getDuration() / 1000));
+
             mTimerHandler.postDelayed(mTimerTask, TIMEOUT_PERIOD);
         }
     };
@@ -76,7 +84,7 @@ public class PlaybackControlsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle bundle) {
         return inflator.inflate(R.layout.playback_controls_layout, container, false);
@@ -103,6 +111,8 @@ public class PlaybackControlsFragment extends Fragment {
         });
 
         mSeekBar = (SeekBar)getView().findViewById(R.id.playback_controls_seekbar);
+        mCurrentPositionText = (TextView)getView().findViewById(R.id.playback_controls_current_position_text);
+        mDurationText = (TextView)getView().findViewById(R.id.playback_controls_duration_text);
     }
 
     @Override

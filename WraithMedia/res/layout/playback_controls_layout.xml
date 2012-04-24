@@ -4,8 +4,17 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical">
-    <SeekBar android:id="@+id/playback_controls_seekbar"
-             android:layout_height="wrap_content" android:layout_width="fill_parent" />
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal" android:padding="10dip">
+        <TextView style="@style/PlaybackControlsMediaTimeText"
+                  android:id="@+id/playback_controls_current_position_text" android:layout_height="fill_parent"
+                  android:layout_width="wrap_content" android:text="0:00"/>
+        <SeekBar android:id="@+id/playback_controls_seekbar" android:layout_weight="1"
+                 android:layout_height="wrap_content" android:layout_width="fill_parent" />
+        <TextView style="@style/PlaybackControlsMediaTimeText"
+                  android:id="@+id/playback_controls_duration_text" android:layout_height="fill_parent"
+                  android:layout_width="wrap_content" android:text="0:00"/>
+    </LinearLayout>
 
     <LinearLayout android:layout_height="wrap_content"
                   android:layout_width="fill_parent" android:orientation="horizontal">

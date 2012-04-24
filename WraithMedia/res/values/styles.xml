@@ -5,4 +5,10 @@
         <item name="android:singleLine">true</item>
         <item name="android:paddingRight">40dip</item>
     </style>
+    <style name="PlaybackControlsMediaTimeText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+    </style>
 </resources>
