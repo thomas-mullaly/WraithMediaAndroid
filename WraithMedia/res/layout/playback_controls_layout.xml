@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:background="@drawable/playback_controls_transparent_gradient">
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:padding="10dip">
         <TextView style="@style/PlaybackControlsMediaTimeText"

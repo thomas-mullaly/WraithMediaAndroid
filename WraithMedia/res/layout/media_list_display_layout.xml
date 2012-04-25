@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
 
     <FrameLayout android:id="@+id/fragment_content"
                  android:layout_width="match_parent"
-                 android:layout_height="0dip"
-                 android:layout_weight="1"
+                 android:layout_height="fill_parent"
                  android:paddingRight="20dip"
                  android:paddingLeft="20dip"/>
 
     <fragment class="com.wraithmedia.ui.PlaybackControlsFragment"
               android:layout_height="wrap_content" android:layout_width="fill_parent"
-              android:id="@+id/playback_controls"/>
-</LinearLayout>
+              android:id="@+id/playback_controls" android:layout_alignBottom="@id/fragment_content" />
+</RelativeLayout>
 

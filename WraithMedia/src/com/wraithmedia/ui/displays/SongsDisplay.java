@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+
 import com.wraithmedia.R;
 import com.wraithmedia.media.MediaSelectionListener;
 
@@ -35,8 +37,6 @@ public class SongsDisplay extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        bindToMediaStore();
     }
     
     @Override
@@ -47,6 +47,12 @@ public class SongsDisplay extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        // HACK: Use device independent pixels.
+        TextView paddingView = new TextView(getActivity());
+        paddingView.setHeight(120);
+        getListView().addFooterView(paddingView);
+        bindToMediaStore();
 
         setupListView();
     }
