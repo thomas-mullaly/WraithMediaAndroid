@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".visualizer.VisualizerActivity" android:label="Visualizer" />
         <service android:name="com.wraithmedia.playback.MediaPlaybackService" android:exported="false" />
     </application>
 
