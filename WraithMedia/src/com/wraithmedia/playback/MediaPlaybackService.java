@@ -90,6 +90,10 @@ public class MediaPlaybackService extends Service {
         return mMediaPlayer.getDuration();
     }
 
+    public int getMediaSessionId() {
+        return mMediaPlayer.getAudioSessionId();
+    }
+
     private void pauseMediaPlayer() {
         stopForeground(true);
         mMediaPlayer.pause();

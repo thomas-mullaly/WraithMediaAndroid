@@ -3,6 +3,7 @@ package com.wraithmedia;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import com.wraithmedia.playback.MediaPlaybackServiceConnectionCallback;
 import com.wraithmedia.playback.MediaPlaybackServiceConnector;
 import com.wraithmedia.ui.TabListener;
 import com.wraithmedia.ui.displays.SongsDisplay;
+import com.wraithmedia.visualizer.VisualizerActivity;
 
 public class MediaListDisplayActivity extends Activity implements MediaSelectionListener {
     private MediaPlaybackService mMediaPlaybackService;
@@ -71,6 +73,11 @@ public class MediaListDisplayActivity extends Activity implements MediaSelection
     public void onMediaSelected(Cursor cursor) {
         if (mBoundToMediaPlayerService) {
             mMediaPlaybackService.playMedia(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+
+            Intent i = new Intent(this, VisualizerActivity.class);
+            i.putExtra("mediaPlayerSessionId", mMediaPlaybackService.getMediaSessionId());
+
+            startActivity(i);
         }
     }
 }
