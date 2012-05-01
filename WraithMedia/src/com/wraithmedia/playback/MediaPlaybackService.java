@@ -1,5 +1,7 @@
 package com.wraithmedia.playback;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -8,6 +10,9 @@ import android.os.IBinder;
 import android.util.Log;
 
 import java.io.IOException;
+
+import com.wraithmedia.MediaListDisplayActivity;
+import com.wraithmedia.R;
 
 public class MediaPlaybackService extends Service {
     private final String MUSIC_PLAYER_SERVICE_NAME = getClass().getName();
@@ -86,11 +91,24 @@ public class MediaPlaybackService extends Service {
     }
 
     private void pauseMediaPlayer() {
+        stopForeground(true);
         mMediaPlayer.pause();
         broadcastChange(MUSIC_PLAYBACK_BROADCAST_PLAYSTATE_CHANGED);
     }
 
     private void startMediaPlayer() {
+        Notification notification = new Notification(R.drawable.ic_launcher, "Derp", System.currentTimeMillis());
+        Intent i = new Intent(this, MediaListDisplayActivity.class);
+
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+
+        notification.setLatestEventInfo(this, "Wraith Media Player", "Now Playing", pendingIntent);
+        notification.flags |= Notification.FLAG_NO_CLEAR;
+
+        startForeground(1, notification);
+
         mMediaPlayer.start();
         broadcastChange(MUSIC_PLAYBACK_BROADCAST_PLAYSTATE_CHANGED);
     }

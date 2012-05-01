@@ -46,6 +46,8 @@ public class MediaPlaybackServiceConnector extends AbstractServiceConnector<Medi
         ServiceBinder binder = new ServiceBinder(connectionCallback);
 
         Intent serviceIntent = new Intent(wrapper, MediaPlaybackService.class);
+        wrapper.startService(serviceIntent);
+
         if (wrapper.bindService(serviceIntent, binder, Context.BIND_AUTO_CREATE)) {
             mConnectionMap.put(wrapper, binder);
             return new ServiceToken(wrapper);
