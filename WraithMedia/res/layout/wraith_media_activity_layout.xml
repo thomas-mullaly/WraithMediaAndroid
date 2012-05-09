@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
 
     <com.viewpagerindicator.TitlePageIndicator android:id="@+id/media_list_display_view_pager_titles"
         android:layout_height="wrap_content" android:layout_width="fill_parent"/>
-    <android.support.v4.view.ViewPager android:id="@+id/media_list_display_view_pager"
-                 android:layout_width="match_parent"
-                 android:layout_height="fill_parent"
-                 android:paddingRight="20dip"
-                 android:paddingLeft="20dip"/>
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <android.support.v4.view.ViewPager android:id="@+id/media_list_display_view_pager"
+                     android:layout_width="match_parent"
+                     android:layout_height="fill_parent"
+                     android:paddingRight="20dip"
+                     android:paddingLeft="20dip"/>
 
-    <fragment class="com.wraithmedia.ui.PlaybackControlsFragment"
-              android:layout_height="wrap_content" android:layout_width="fill_parent"
-              android:id="@+id/playback_controls" android:layout_alignBottom="@id/media_list_display_view_pager" />
-</RelativeLayout>
+        <fragment class="com.wraithmedia.ui.PlaybackControlsFragment"
+                  android:layout_height="wrap_content" android:layout_width="fill_parent"
+                  android:id="@+id/playback_controls" android:layout_alignBottom="@id/media_list_display_view_pager" />
+    </RelativeLayout>
+</LinearLayout>
 
