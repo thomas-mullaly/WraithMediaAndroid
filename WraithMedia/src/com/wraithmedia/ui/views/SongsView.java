@@ -1,10 +1,10 @@
-package com.wraithmedia.ui.displays;
+package com.wraithmedia.ui.views;
 
 import android.app.Activity;
-import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.wraithmedia.R;
 import com.wraithmedia.media.MediaSelectionListener;
 
-public class SongsDisplay extends ListFragment {
+public class SongsView extends ListFragment {
     public static final String SONGS_DISPLAY_TAG_NAME = "songs";
 
     private static final String[] MEDIA_COLUMNS_TO_QUERY = {
@@ -41,7 +41,7 @@ public class SongsDisplay extends ListFragment {
     
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container, Bundle bundle) {
-        return inflator.inflate(R.layout.displays_song_display, container, false);
+        return inflator.inflate(R.layout.song_view_layout, container, false);
     }
 
     @Override

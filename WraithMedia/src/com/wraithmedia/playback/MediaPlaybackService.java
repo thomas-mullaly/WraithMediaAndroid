@@ -11,7 +11,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import com.wraithmedia.MediaListDisplayActivity;
+import com.wraithmedia.WraithMediaActivity;
 import com.wraithmedia.R;
 
 public class MediaPlaybackService extends Service {
@@ -102,7 +102,7 @@ public class MediaPlaybackService extends Service {
 
     private void startMediaPlayer() {
         Notification notification = new Notification(R.drawable.ic_launcher, "Derp", System.currentTimeMillis());
-        Intent i = new Intent(this, MediaListDisplayActivity.class);
+        Intent i = new Intent(this, WraithMediaActivity.class);
 
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
 

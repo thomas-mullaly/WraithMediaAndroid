@@ -1,26 +1,30 @@
 package com.wraithmedia;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+
+import com.viewpagerindicator.PageIndicator;
 import com.wraithmedia.core.service.ServiceToken;
 import com.wraithmedia.media.MediaSelectionListener;
 import com.wraithmedia.playback.MediaPlaybackService;
 import com.wraithmedia.playback.MediaPlaybackServiceConnectionCallback;
 import com.wraithmedia.playback.MediaPlaybackServiceConnector;
-import com.wraithmedia.ui.TabListener;
-import com.wraithmedia.ui.displays.SongsDisplay;
+import com.wraithmedia.ui.MediaViewsPagerAdapter;
 import com.wraithmedia.visualizer.VisualizerActivity;
 
-public class MediaListDisplayActivity extends Activity implements MediaSelectionListener {
+public class WraithMediaActivity extends FragmentActivity implements MediaSelectionListener {
     private MediaPlaybackService mMediaPlaybackService;
     private boolean mBoundToMediaPlayerService = false;
     private MediaPlaybackServiceConnector mMediaPlaybackServiceConnector;
     private ServiceToken mMediaPlaybackServiceToken;
+    private ViewPager mViewPager;
+    private MediaViewsPagerAdapter mViewsAdapater;
+    private PageIndicator mViewPageIndicator;
 
     private final MediaPlaybackServiceConnectionCallback mMediaPlayerServiceConnection = new MediaPlaybackServiceConnectionCallback() {
         public void onServiceConnected(ComponentName componentName, MediaPlaybackService service) {
@@ -37,9 +41,9 @@ public class MediaListDisplayActivity extends Activity implements MediaSelection
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.media_list_display_layout);
+        setContentView(R.layout.wraith_media_activity_layout);
 
-        setupActionBar();
+        setupViewPager();
     }
 
     @Override
@@ -60,16 +64,6 @@ public class MediaListDisplayActivity extends Activity implements MediaSelection
         }
     }
 
-    private void setupActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayShowTitleEnabled(false);
-
-        ActionBar.Tab tab = actionBar.newTab().setText(R.string.action_bar_songs)
-                .setTabListener(new TabListener<SongsDisplay>(this, SongsDisplay.SONGS_DISPLAY_TAG_NAME, SongsDisplay.class));
-        actionBar.addTab(tab);
-    }
-
     public void onMediaSelected(Cursor cursor) {
         if (mBoundToMediaPlayerService) {
             mMediaPlaybackService.playMedia(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
@@ -79,5 +73,15 @@ public class MediaListDisplayActivity extends Activity implements MediaSelection
 
             startActivity(i);
         }
+    }
+
+    private void setupViewPager() {
+        mViewsAdapater = new MediaViewsPagerAdapter(getSupportFragmentManager());
+
+        mViewPager = (ViewPager)findViewById(R.id.media_list_display_view_pager);
+        mViewPager.setAdapter(mViewsAdapater);
+
+        mViewPageIndicator = (PageIndicator)findViewById(R.id.media_list_display_view_pager_titles);
+        mViewPageIndicator.setViewPager(mViewPager);
     }
 }
