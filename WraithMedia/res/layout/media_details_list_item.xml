@@ -3,10 +3,7 @@
               android:layout_width="fill_parent" android:layout_height="fill_parent"
               android:orientation="vertical">
     <TextView android:id="@+id/text_media_details_title" android:layout_width="wrap_content"
-              android:layout_height="wrap_content" style="@style/MediaDetailsListItem"/>
+              android:layout_height="wrap_content"/>
     <TextView android:id="@+id/text_media_details_artist" android:layout_width="wrap_content"
-              android:layout_height="wrap_content" style="@style/MediaDetailsListItem" />
-    <TextView android:id="@+id/text_media_details_album" android:layout_width="wrap_content"
-              android:layout_height="wrap_content" style="@style/MediaDetailsListItem"
-              android:visibility="gone"/>
+              android:layout_height="wrap_content"/>
 </LinearLayout>
